@@ -15,5 +15,5 @@ public class ConnectionFactory {
 			throw new RuntimeErrorException(e);
 		}
 	}
-//teste de maquina
+//teste de maquina realizado com sucesso
 }
