@@ -1,5 +1,7 @@
 package trabalhobd.jdbc.model;
 
+import trabalhobd.jdbc.dao.ProdutoDAO;
+
 public class Produto {
 	private int idProduto;
 	private int idCat;
@@ -13,10 +15,36 @@ public class Produto {
 		
 	}
 
+	public void adicionarProduto (int idCateg, String nome, int idForn, String descr, float vCompra, float vVenda) {
+		try {
+			Produto novoProduto = new Produto();
+			novoProduto.setIdCat(idCateg);
+			novoProduto.setNomeProd(nome);
+			novoProduto.setIdFornecedor(idForn);
+			novoProduto.setDescricao(descr);
+			novoProduto.setValorCompra(vCompra);
+			novoProduto.setValorVenda(vVenda);
+			ProdutoDAO novo = new ProdutoDAO();
+			novo.inserirProduto(novoProduto);
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + "Erro em adicionar produto");
+		}
+	}
+	
+	public void removerProduto (int idProd) {
+		try {
+			Produto prod = new Produto();
+			prod.setIdProduto(idProd);
+			ProdutoDAO remover = new ProdutoDAO();
+			remover.removerProduto(prod);
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + "Erro em remover produto!");
+		}
+		
+	}
 	
 	
 	//metodos getters setters
-	
 	public int getIdProduto() { return idProduto; }
 	public void setIdProduto(int idProduto) {
 		this.idProduto = idProduto;

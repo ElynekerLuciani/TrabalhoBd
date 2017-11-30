@@ -38,8 +38,8 @@ import javax.swing.table.DefaultTableModel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import control.ModeloTabela;
-import model.Fornecedor;
-import model.Validar;
+import trabalhobd.jdbc.model.Fornecedor;
+import trabalhobd.jdbc.model.Validar;
 
 public class SGBDEstoque {
 

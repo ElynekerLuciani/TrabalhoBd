@@ -34,6 +34,18 @@ public class ProdutoDAO {
 		}
 	}
 	
+	public void removerProduto(Produto idProd) {
+		sql = "INSERIR CONSULTA";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setInt(1, idProd.getIdProduto());
+			stmt.execute();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + "Erro ao remover produto!");
+		}
+	}
+	
 	
 	//metodos getter setters
 	public Connection getConnection() { return connection; }

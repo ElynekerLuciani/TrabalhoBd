@@ -1,5 +1,7 @@
 package trabalhobd.jdbc.model;
 
+import trabalhobd.jdbc.dao.EstoqueDAO;
+
 public class Estoque {
 	private int idProduto;
 	private String dataEntrada;
@@ -11,6 +13,31 @@ public class Estoque {
 		
 	}
 
+	public void adicionarNoEstoque(int idProduto, int qnt, String dataEntr) {
+		try {
+			Estoque novoItem = new Estoque();
+			novoItem.setIdProduto(idProduto);
+			novoItem.setQuantidade(qnt);
+			novoItem.setDataEntrada(dataEntr);
+			EstoqueDAO adicionarNovoItem = new EstoqueDAO();
+			adicionarNovoItem.inserirNoEstoque(novoItem);
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + "Erro ao adicionar no estoque!" );
+		}
+	}
+	
+	public void retirarDoEstoque(int idProduto, int qnt) {
+		try {
+			Estoque retirarItem = new Estoque();
+			retirarItem.setIdProduto(idProduto);
+			retirarItem.setQuantidade(qnt);
+			EstoqueDAO retirarDoEstoque = new EstoqueDAO();
+			retirarDoEstoque.retirarDoEstoque(retirarItem);
+		} catch (Exception e) {
+			System.out.println(e.getMessage() + "Erro de retirar do estoque!");
+		}
+		
+	}
 	
 	//metodos getters setters
 	public int getIdProduto() { return idProduto; }

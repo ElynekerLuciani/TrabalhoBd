@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 
-import model.Contato;
-import model.Endereco;
-import model.Fornecedor;
+import trabalhobd.jdbc.model.Contato;
+import trabalhobd.jdbc.model.Endereco;
+import trabalhobd.jdbc.model.Fornecedor;
 
 public class FornecedorDAO {
 	private BancoDeDados banco = new BancoDeDados();

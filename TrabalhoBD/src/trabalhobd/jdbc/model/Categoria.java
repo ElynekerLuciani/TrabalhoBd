@@ -1,5 +1,7 @@
 package trabalhobd.jdbc.model;
 
+import trabalhobd.jdbc.dao.CategoriaDAO;
+
 public class Categoria {
 	private int idCategoria;
 	private String nomeCat;
@@ -13,9 +15,8 @@ public class Categoria {
 		try{
 			Categoria novaCategoria = new Categoria();
 			novaCategoria.setNomeCat(add);
-			
-			//COLOCAR AQUI CHAMADA DO DAO
-			
+			CategoriaDAO categoria = new CategoriaDAO();
+			categoria.criarCategoria(novaCategoria);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
