@@ -6,7 +6,7 @@ public class Estoque {
 	private int idProduto;
 	private String dataEntrada;
 	private String dataSaida;
-	private Produto prod = new Produto();
+	private int prod;
 	private int quantidade;
 	
 	public Estoque() {
@@ -32,7 +32,7 @@ public class Estoque {
 			retirarItem.setIdProduto(idProduto);
 			retirarItem.setQuantidade(qnt);
 			EstoqueDAO retirarDoEstoque = new EstoqueDAO();
-			retirarDoEstoque.retirarDoEstoque(retirarItem);
+			retirarDoEstoque.retirarDoEstoque(retirarItem, qnt);
 		} catch (Exception e) {
 			System.out.println(e.getMessage() + "Erro de retirar do estoque!");
 		}
@@ -54,12 +54,10 @@ public class Estoque {
 	public void setDataSaida(String dataSaida) {
 		this.dataSaida = dataSaida;
 	}
-
-	public Produto getProd() { return prod; }
-	public void setProd(Produto prod) {
+	public int getProd() { return prod; }
+	public void setProd(int prod) {
 		this.prod = prod;
 	}
-
 	public int getQuantidade() { return quantidade; }
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;

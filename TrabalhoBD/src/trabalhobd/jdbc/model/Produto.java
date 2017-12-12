@@ -11,11 +11,12 @@ public class Produto {
 	private float valorCompra;
 	private float valorVenda;
 	
+	
 	public Produto() {
 		
 	}
 
-	public void adicionarProduto (int idCateg, String nome, int idForn, String descr, float vCompra, float vVenda) {
+	public void adicionarProduto (int idCateg, String nome, int idForn, String descr, float vCompra, float vVenda) throws Exception {
 		try {
 			Produto novoProduto = new Produto();
 			novoProduto.setIdCat(idCateg);
@@ -27,20 +28,35 @@ public class Produto {
 			ProdutoDAO novo = new ProdutoDAO();
 			novo.inserirProduto(novoProduto);
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + "Erro em adicionar produto");
+			throw new Exception(e.getMessage() + "Erro em adicionar produto");	
 		}
 	}
 	
-	public void removerProduto (int idProd) {
+	public void removerProduto (int idProd) throws Exception {
 		try {
 			Produto prod = new Produto();
 			prod.setIdProduto(idProd);
 			ProdutoDAO remover = new ProdutoDAO();
 			remover.removerProduto(prod);
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + "Erro em remover produto!");
+			throw new Exception(e.getMessage() + "Erro em remover produto!");
 		}
 		
+	}
+	
+	public void alterarProduto(Produto prod) throws Exception {
+		Produto alterarProduto = new Produto();
+		try {
+			alterarProduto.setNomeProd(prod.getNomeProd());
+			alterarProduto.setIdFornecedor(prod.getIdFornecedor());
+			alterarProduto.setDescricao(prod.getDescricao());
+			alterarProduto.setValorCompra(prod.getValorCompra());
+			alterarProduto.setValorVenda(prod.getValorVenda());
+			ProdutoDAO dao = new ProdutoDAO();
+			dao.alterarProduto(alterarProduto);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage() + "Erro em alterar produto!");
+		}
 	}
 	
 	
