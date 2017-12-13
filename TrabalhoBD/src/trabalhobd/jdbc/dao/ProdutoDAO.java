@@ -52,6 +52,23 @@ public class ProdutoDAO {
 		}
 	}
 	
+	public void alterarProduto(Produto prod) throws Exception {
+		sql = "UPDATE produto SET idCat = '?', nomeProd = '?'," +
+			"idFornecedor = '?', descricao = '?', valorCompra = '?', valorVenda = '?'";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setInt(1, prod.getIdCat());
+			stmt.setString(2, prod.getNomeProd());
+			stmt.setInt(3, prod.getIdFornecedor());
+			stmt.setFloat(4, prod.getValorCompra());
+			stmt.setFloat(5, prod.getValorVenda());
+			stmt.executeQuery();
+			stmt.close();
+		} catch (Exception e) {
+			throw new Exception(e);
+		}
+	}
+	
 	
 	
 	//metodos getter setters

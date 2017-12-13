@@ -1,5 +1,8 @@
 package trabalhobd.jdbc.model;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import trabalhobd.jdbc.dao.EstoqueDAO;
 
 public class Estoque {
@@ -37,6 +40,25 @@ public class Estoque {
 			System.out.println(e.getMessage() + "Erro de retirar do estoque!");
 		}
 		
+	}
+	
+	public ArrayList<Estoque> buscarEstoque () throws SQLException {
+		EstoqueDAO daoEstoque = new EstoqueDAO();
+		ArrayList<Estoque> aux= daoEstoque.listarEstoque();
+		return aux;
+	}
+	
+	public int quantidadeNoEstoque(int idProduto) {
+		int temp = 0;
+		try {
+			Estoque quantidadeEstoque = new Estoque();
+			quantidadeEstoque.setQuantidade(idProduto);
+			EstoqueDAO estoque = new EstoqueDAO();
+			temp = estoque.verificarEstoque(quantidadeEstoque);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return temp;
 	}
 	
 	//metodos getters setters

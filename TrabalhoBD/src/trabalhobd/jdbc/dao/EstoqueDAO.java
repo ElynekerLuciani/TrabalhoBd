@@ -16,6 +16,9 @@ import trabalhobd.jdbc.model.Produto;
 public class EstoqueDAO {
 	private Connection connection;
 	private String sql;
+	private int temp;
+	
+	
 	
 	
 	public EstoqueDAO() throws SQLException {
@@ -36,13 +39,14 @@ public class EstoqueDAO {
 		}
 	}
 	
-	public void alterarProduto(Estoque prod) throws Exception {
-		sql = "\"UPDATE estoque SET dataEntrada = '?', dataSaida = '?', quantidade = '?' ";
+	public void alterarProdutoEstoque(Estoque prod) throws Exception {
+		//sql = "\"UPDATE estoque SET dataEntrada = '?', dataSaida = '?', quantidade = '?' ";
+		sql = "\"UPDATE estoque SET dataSaida = '?', quantidade = '?' ";
 		try {
 			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setString(1, prod.getDataEntrada());
-			stmt.setString(2, prod.getDataSaida());
-			stmt.setInt(3, prod.getQuantidade());
+			//stmt.setString(1, prod.getDataEntrada());
+			stmt.setString(1, prod.getDataSaida());
+			stmt.setInt(2, prod.getQuantidade());
 			
 			stmt.executeQuery();
 			stmt.close();
@@ -55,29 +59,62 @@ public class EstoqueDAO {
 	
 	
 	public void retirarDoEstoque(Estoque prod, int qnt) throws Exception {
-		if (prod.getQuantidade()> 0) {
-			prod.setQuantidade(prod.getQuantidade() - qnt);
-			alterarProduto(prod);	
+		temp = verificarEstoque(prod);
+		temp = temp - qnt;
+		sql = "UPDATE estoque SET quantidade = '" + temp +" ' ";
+		if (temp > 0) {
+			try {
+				PreparedStatement stmt = connection.prepareStatement(sql);
+				stmt.setInt(1, prod.getQuantidade());
+				stmt.executeQuery();
+				stmt.close();
+			} catch (Exception e) {
+				throw new Exception(e.getMessage() + "Erro ao retirar do Estoque");
+			}
 		} else {
+			
 			throw new Exception("não tem produto disponível");
 		}
 	}
 	
-	public boolean verificarEstoque(Estoque produto) {
+	public int verificarEstoque(Estoque produto) {
 		sql = "SELECT quantidade FROM estoque WHERE idProd = " + produto.getIdProduto() + ";";
 		try { 
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			stmt.close();
 			rs.close();
-			if( rs.getInt("quantidade") <= 0 ) {
-				return false;
+			if(rs.next()) {
+				temp = rs.getInt("quantidade");
+				return temp;
 			}
 			} catch (Exception e) {
 			throw new RuntimeException(e);
 			}
-		return true;
+		return temp;
 	}
+	
+	public ArrayList<Estoque> listarEstoque() {
+		ArrayList<Estoque> estoque = new ArrayList<Estoque>();
+		Estoque aux = new Estoque();
+		sql = "SELECT * FROM estoque";
+		try {
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				aux.setIdProduto(rs.getInt("idProduto"));
+				aux.setQuantidade(rs.getInt("quantidade"));
+				aux.setDataEntrada(rs.getString("dataEntrada"));
+				estoque.add(aux);
+			}
+			stmt.close();
+			rs.close();
+			return estoque;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	
 	public Produto retornarProduto(int idProduto) throws Exception {
 		sql = "SELECT *FROM  produto WHERE idProd = "+ idProduto + ";";
