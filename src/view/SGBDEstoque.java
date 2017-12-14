@@ -35,10 +35,13 @@ import javax.swing.table.DefaultTableModel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import model.ModeloTabela;
 import model.Fornecedor;
+import model.Cliente;
 import model.Validar;
+import java.awt.event.FocusAdapter;
 
 public class SGBDEstoque {
 
+	private JTextField ComplementoC = null;
 	private JFrame frame;
 	private JTextField NomeCF;
 	private JTextField EnderecoCF;
@@ -51,8 +54,18 @@ public class SGBDEstoque {
 	private JTextField CpfCF;
 	private JTextField CnpjCF;
 	private String[] VisualizarFornecedores = new String[]{"Id", "Nome", "CPF/CNPJ", "Telefone1", "Telefone2", "E-mail"};
+	private String[] VisualizarCli = new String[]{"Id", "Nome", "CPF", "Telefone1", "Telefone2", "E-mail"};
 	private JTable VFornecedores;
+	private JTable VClientes;
 	private JTextField txtId;
+	private JTextField Idcliente;
+	private JTextField EnderecoCC;
+	private JTextField NumeroC;
+	private JTextField Telefone1CC;
+	private JTextField Telefone2CC;
+	private JTextField EmailCC;
+	private JTextField NomeCC;
+	private JTextField Cpfcc;
 	/**
 	 * Launch the application.
 	 */
@@ -133,15 +146,33 @@ public class SGBDEstoque {
 		
 		JPanel CancelarCF = new JPanel();
 		
+		JPanel CancelarCC = new JPanel();
+		
 		JPanel CadastrarCF = new JPanel();
+		
+		JPanel CadastrarCC = new JPanel();
 		
 		JPanel AlterarVF = new JPanel();
 		
+		JPanel AlterarVC = new JPanel();
+		
 		JPanel ExcluirVF = new JPanel();
+		
+		JPanel ExcluirVC = new JPanel();
 		
 		JPanel ArticleVFornecedor = new JPanel();
 		
+		JPanel ArticleVCliente = new JPanel();
+		
 		JPanel ArticleCCliente = new JPanel();
+		
+		JLabel CadastrarClientes = DefaultComponentFactory.getInstance().createLabel("Cadastrar clientes");
+		
+		JLabel VisualizarClientes = DefaultComponentFactory.getInstance().createLabel("Visualizar clientes");
+		
+		JLabel CadastrarProdutos = DefaultComponentFactory.getInstance().createLabel("Cadastrar produtos:");
+		
+		JLabel VisualizarProdutos = DefaultComponentFactory.getInstance().createLabel("Visualizar produtos");
 		
 		//Declarações
 		
@@ -159,10 +190,16 @@ public class SGBDEstoque {
 				BotaoHoverEstoque.setVisible(false);
 				Visualizarfornecedores.setVisible(true);
 				CadastrarFornecedores.setVisible(true);
+				VisualizarClientes.setVisible(false);
+				CadastrarClientes.setVisible(false);
+				VisualizarClientes.setForeground(Color.white);
+				CadastrarClientes.setForeground(Color.white);
 				Visualizarfornecedores.setForeground(Color.white);
 				CadastrarFornecedores.setForeground(Color.white);
 				ArticleCFornecedor.setVisible(false);
 				ArticleVFornecedor.setVisible(false);
+				ArticleVCliente.setVisible(false);
+				ArticleCCliente.setVisible(false);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -179,6 +216,10 @@ public class SGBDEstoque {
 		Fornecedor.setFont(new Font("Arial", Font.PLAIN, 16));
 		Fornecedor.setBounds(10, 100, 88, 14);
 		frame.getContentPane().add(Fornecedor);
+		Cliente.setForeground(Color.WHITE);
+		Cliente.setFont(new Font("Arial", Font.PLAIN, 16));
+		Cliente.setBounds(110, 100, 49, 14);
+		frame.getContentPane().add(Cliente);
 		
 		//Cliente
 		Cliente.addMouseListener(new MouseAdapter() {
@@ -192,10 +233,20 @@ public class SGBDEstoque {
 				BotaoHoverFornecedor.setVisible(false);
 				BotaoHoverProduto.setVisible(false);
 				BotaoHoverEstoque.setVisible(false);
+				VisualizarClientes.setVisible(true);
+				CadastrarClientes.setVisible(true);
+				VisualizarClientes.setForeground(Color.white);
+				CadastrarClientes.setForeground(Color.white);
+				Visualizarfornecedores.setForeground(Color.white);
+				CadastrarFornecedores.setForeground(Color.white);
 				Visualizarfornecedores.setVisible(false);
 				CadastrarFornecedores.setVisible(false);
 				ArticleCFornecedor.setVisible(false);
 				ArticleVFornecedor.setVisible(false);
+				ArticleVCliente.setVisible(false);
+				ArticleCCliente.setVisible(false);
+				VisualizarProdutos.setVisible(false);
+				CadastrarProdutos.setVisible(false);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -208,10 +259,6 @@ public class SGBDEstoque {
 					BotaoHoverCliente.setVisible(false);
 			}
 		});
-		Cliente.setForeground(Color.WHITE);
-		Cliente.setFont(new Font("Arial", Font.PLAIN, 16));
-		Cliente.setBounds(110, 100, 49, 14);
-		frame.getContentPane().add(Cliente);
 		
 		//Produto
 		Produto.addMouseListener(new MouseAdapter() {
@@ -229,6 +276,10 @@ public class SGBDEstoque {
 				CadastrarFornecedores.setVisible(false);
 				ArticleCFornecedor.setVisible(false);
 				ArticleVFornecedor.setVisible(false);
+				VisualizarProdutos.setVisible(false);
+				CadastrarProdutos.setVisible(false);
+				VisualizarClientes.setVisible(false);
+				CadastrarClientes.setVisible(false);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -289,6 +340,8 @@ public class SGBDEstoque {
 				criarTabela(VisualizarFornecedores, VFornecedores, "");
 				ArticleVFornecedor.setVisible(true);
 				ArticleCFornecedor.setVisible(false);
+				ArticleVCliente.setVisible(false);
+				ArticleCCliente.setVisible(false);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -301,6 +354,23 @@ public class SGBDEstoque {
 					Visualizarfornecedores.setForeground(Color.white);
 			}
 		});
+		
+		//Cadastrar Produtos
+		CadastrarProdutos.setForeground(Color.WHITE);
+		CadastrarProdutos.setFont(new Font("Arial", Font.PLAIN, 16));
+		CadastrarProdutos.setBounds(200, 135, 139, 16);
+		CadastrarProdutos.setVisible(false);
+		frame.getContentPane().add(CadastrarProdutos);
+		
+		//Visualizar Produtos
+		VisualizarProdutos.setForeground(Color.WHITE);
+		VisualizarProdutos.setFont(new Font("Arial", Font.PLAIN, 16));
+		VisualizarProdutos.setBounds(40, 135, 138, 14);
+		VisualizarProdutos.setVisible(false);
+		frame.getContentPane().add(VisualizarProdutos);
+		
+		
+		//Visualizar fornecedores
 		Visualizarfornecedores.setForeground(Color.WHITE);
 		Visualizarfornecedores.setFont(new Font("Arial", Font.PLAIN, 16));
 		Visualizarfornecedores.setBounds(40, 135, 166, 14);
@@ -314,6 +384,8 @@ public class SGBDEstoque {
 				Visualizarfornecedores.setForeground(Color.white);
 				ArticleCFornecedor.setVisible(true);
 				ArticleVFornecedor.setVisible(false);
+				ArticleVCliente.setVisible(false);
+				ArticleCCliente.setVisible(false);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -330,6 +402,63 @@ public class SGBDEstoque {
 		CadastrarFornecedores.setFont(new Font("Arial", Font.PLAIN, 16));
 		CadastrarFornecedores.setBounds(228, 135, 166, 14);
 		frame.getContentPane().add(CadastrarFornecedores);
+		
+		//Visualizar Clientes
+		VisualizarClientes.setForeground(Color.WHITE);
+		VisualizarClientes.setFont(new Font("Arial", Font.PLAIN, 16));
+		VisualizarClientes.setBounds(40, 135, 131, 14);
+		VisualizarClientes.setVisible(false);
+		VisualizarClientes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				if(VisualizarClientes.getForeground()!=Color.yellow)
+					VisualizarClientes.setForeground(Color.LIGHT_GRAY);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if(VisualizarClientes.getForeground()!=Color.yellow)
+					VisualizarClientes.setForeground(Color.white);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				VisualizarClientes.setForeground(Color.yellow);
+				CadastrarClientes.setForeground(Color.white);
+				criarTabelaC(VisualizarCli, VClientes, "");
+				ArticleVCliente.setVisible(true);
+				ArticleCCliente.setVisible(false);
+				ArticleVFornecedor.setVisible(false);
+				ArticleCFornecedor.setVisible(false);
+			}
+		});
+		frame.getContentPane().add(VisualizarClientes);
+		
+		//Cadastrar Clientes
+		CadastrarClientes.setForeground(Color.WHITE);
+		CadastrarClientes.setFont(new Font("Arial", Font.PLAIN, 16));
+		CadastrarClientes.setBounds(190, 135, 131, 14);
+		CadastrarClientes.setVisible(false);
+		CadastrarClientes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				if(CadastrarClientes.getForeground()!=Color.yellow)
+					CadastrarClientes.setForeground(Color.LIGHT_GRAY);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if(CadastrarClientes.getForeground()!=Color.yellow)
+					CadastrarClientes.setForeground(Color.white);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				VisualizarClientes.setForeground(Color.white);
+				CadastrarClientes.setForeground(Color.yellow);
+				ArticleVCliente.setVisible(false);
+				ArticleCCliente.setVisible(true);
+				ArticleVFornecedor.setVisible(false);
+				ArticleCFornecedor.setVisible(false);
+			}
+		});
+		frame.getContentPane().add(CadastrarClientes);
 		frame.getContentPane().add(BotaoHoverFornecedor);
 		
 		//Botao Hover Fornecedor
@@ -408,14 +537,580 @@ public class SGBDEstoque {
 		ArticleVFornecedor.setLayout(null);
 		ArticleVFornecedor.setVisible(false);
 		
+		//Article Visualizar cliente
+		ArticleVCliente.setBackground(Color.WHITE);
+		ArticleVCliente.setBounds(139, 169, 1088, 506);
+		ArticleVCliente.setVisible(false);
+		frame.getContentPane().add(ArticleVCliente);
+		ArticleVCliente.setLayout(null);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(59, 44, 973, 401);
+		ArticleVCliente.add(scrollPane_1);
+		
+		// tabela de Vclientes
+		VClientes=new JTable();
+		VClientes.setFont(new Font("SansSerif", VClientes.getFont().getStyle(), 12));
+		VClientes.setShowVerticalLines(true);
+		VClientes.setShowHorizontalLines(true);
+		scrollPane_1.setViewportView(VClientes);
+		VClientes.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Id", "Nome", "CPF", "Telefone1", "Telefone2", "E-mail"
+			}
+		));
+		VClientes.getColumnModel().getColumn(0).setPreferredWidth(0);
+		VClientes.getColumnModel().getColumn(0).setMinWidth(0);
+		VClientes.getColumnModel().getColumn(0).setMaxWidth(0);
+		VClientes.getColumnModel().getColumn(1).setPreferredWidth(93);
+		
+		JLabel AlterarC = DefaultComponentFactory.getInstance().createTitle("Alterar");
+		AlterarC.setBounds(56, 18, 46, 16);
+		AlterarVC.add(AlterarC);
+		AlterarC.setForeground(Color.BLACK);
+		AlterarC.setFont(new Font("Arial", Font.PLAIN, 16));
+		
+		//AlterarVC
+		AlterarVC.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				AlterarVC.setBackground(new Color(0,100,0));
+				AlterarC.setForeground(Color.white);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				AlterarVC.setBackground(new Color(50,205,50));
+				AlterarC.setForeground(Color.black);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(VClientes.getSelectedRow()!=-1){	
+					Cliente Cliente=new Cliente();
+					try {
+						Cliente=Cliente.buscarCliente((String) VClientes.getValueAt(VClientes.getSelectedRow(), 0));
+						NomeCC.setText( Cliente.getNome());
+						EnderecoCC.setText( Cliente.getEndereco().getEndereco());
+						NumeroC.setText(Cliente.getEndereco().getNumero());
+						ComplementoC.setText(Cliente.getEndereco().getComplemento());
+						Telefone1CC.setText(Cliente.getContato().getNumero1());
+						Telefone2CC.setText(Cliente.getContato().getNumero2());
+						EmailCC.setText(Cliente.getContato().getEmail());
+						Idcliente.setText(Cliente.getId());
+						Cpfcc.setText(Cliente.getCpf());
+						NomeCC.setForeground(Color.black);
+						EnderecoCC.setForeground(Color.black);
+						NumeroC.setForeground(Color.black);
+						ComplementoC.setForeground(Color.black);
+						Telefone1CC.setForeground(Color.black);
+						Telefone2CC.setForeground(Color.black);
+						EmailCC.setForeground(Color.black);
+						Cpfcc.setForeground(Color.black);
+						CadastrarClientes.setForeground(Color.yellow);
+						VisualizarClientes.setForeground(Color.white);
+						ArticleCCliente.setVisible(true);
+						ArticleVCliente.setVisible(false);
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(ArticleVCliente, e1.getMessage(), null, JOptionPane.INFORMATION_MESSAGE);
+					}
+				}else{
+					JOptionPane.showMessageDialog(ArticleVCliente, "Selecione um cliente para alterar", null, JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
+		AlterarVC.setBackground(new Color(50,205,50));
+		AlterarVC.setBounds(786, 450, 147, 50);
+		ArticleVCliente.add(AlterarVC);
+		AlterarVC.setLayout(null);
+		
+		JLabel ExcluirC = DefaultComponentFactory.getInstance().createTitle("Excluir");
+		ExcluirC.setBounds(53, 18, 46, 16);
+		ExcluirVC.add(ExcluirC);
+		ExcluirC.setForeground(Color.BLACK);
+		ExcluirC.setFont(new Font("Arial", Font.PLAIN, 16));
+		
+		//ExcluirVC
+		ExcluirVC.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				ExcluirVC.setBackground(new Color(0,100,0));
+				ExcluirC.setForeground(Color.white);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				ExcluirVC.setBackground(new Color(50,205,50));
+				ExcluirC.setForeground(Color.black);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(VClientes.getSelectedRow()!=-1){
+					int i=JOptionPane.showConfirmDialog(ArticleVCliente, "Deseja excluir o cliente?", null, JOptionPane.YES_NO_OPTION);
+					if(i == JOptionPane.YES_OPTION){
+						Cliente cliente=new Cliente();
+						try{
+							cliente.excluirCliente((String) VClientes.getValueAt(VClientes.getSelectedRow(), 0));
+							if (!criarTabelaC(VisualizarCli, VClientes, "select * from clientes order by Nome;"));
+							JOptionPane.showMessageDialog(ArticleVCliente, "Cliente excluido com sucesso", null, JOptionPane.INFORMATION_MESSAGE);
+						}catch (Exception e1) {
+							JOptionPane.showMessageDialog(ArticleVCliente, e1.getMessage(), null, JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+				}else{
+					JOptionPane.showMessageDialog(ArticleVCliente, "Seelecione um cliente", null, JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		ExcluirVC.setBackground(new Color(50,205,50));
+		ExcluirVC.setBounds(935, 450, 147, 50);
+		ArticleVCliente.add(ExcluirVC);
+		ExcluirVC.setLayout(null);
+		
+		////////////////////////////////////////////////////////////////
+		
 		//Article Cadastrar Cliente
 		ArticleCCliente.setBackground(Color.WHITE);
 		ArticleCCliente.setBounds(139, 169, 1088, 506);
+		ArticleCCliente.setVisible(false);
 		frame.getContentPane().add(ArticleCCliente);
 		ArticleCCliente.setLayout(null);
+		
+		Idcliente = new JTextField();
+		Idcliente.setText("-1");
+		Idcliente.setBounds(471, 17, 122, 28);
+		ArticleCCliente.add(Idcliente);
+		Idcliente.setColumns(10);
+		
+		JLabel NomeC = DefaultComponentFactory.getInstance().createLabel("Nome:");
+		NomeC.setFont(new Font("Arial", Font.PLAIN, 16));
+		NomeC.setBounds(51, 50, 46, 14);
+		ArticleCCliente.add(NomeC);
+		
+		NomeCC = new JTextField();
+		NomeCC.setText("Nome do cliente");
+		NomeCC.setForeground(Color.LIGHT_GRAY);
+		NomeCC.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(NomeCC.getText().length()<=0 && NomeCC.getForeground()==Color.black){
+					NomeCC.setText("Nome do cliente");
+					NomeCC.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(NomeCC.getText().length()>0 && NomeCC.getForeground()==Color.LIGHT_GRAY){
+					NomeCC.setText("");
+					NomeCC.setForeground(Color.black);
+				}
+			}
+		});
+		NomeCC.setBounds(51, 67, 539, 25);
+		ArticleCCliente.add(NomeCC);
+		NomeCC.setColumns(10);
+		
+		Idcliente.setVisible(false);
+		
+		JLabel EnderecoC = DefaultComponentFactory.getInstance().createTitle("Endere\u00E7o:");
+		EnderecoC.setFont(new Font("Arial", Font.PLAIN, 16));
+		EnderecoC.setBounds(51, 95, 72, 16);
+		ArticleCCliente.add(EnderecoC);
+		
+		JLabel Required2C = DefaultComponentFactory.getInstance().createTitle("*");
+		Required2C.setFont(new Font("Arial", Font.PLAIN, 16));
+		Required2C.setForeground(Color.RED);
+		Required2C.setBounds(123, 96, 6, 16);
+		ArticleCCliente.add(Required2C);
+		
+		EnderecoCC = new JTextField();
+		EnderecoCC.setColumns(10);
+		EnderecoCC.setDocument(new Documento(100,""));
+		EnderecoCC.setText("prefixo (rua,AV.,e.t.c...) seu endereço");
+		EnderecoCC.setForeground(Color.LIGHT_GRAY);
+		EnderecoCC.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(EnderecoCC.getText().length()<=0 && EnderecoCC.getForeground()==Color.black){
+					EnderecoCC.setText("prefixo (rua,AV.,e.t.c ....) seu endereço");
+					EnderecoCC.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(EnderecoCC.getText().length()>0 && EnderecoCC.getForeground()==Color.LIGHT_GRAY){
+					EnderecoCC.setText("");
+					EnderecoCC.setForeground(Color.black);
+				}
+			}
+		});
+		EnderecoCC.setBounds(51, 112, 390, 25);
+		ArticleCCliente.add(EnderecoCC);
+		
+		JLabel NumeroCC = DefaultComponentFactory.getInstance().createTitle("Numero:");
+		NumeroCC.setFont(new Font("Arial", Font.PLAIN, 16));
+		NumeroCC.setBounds(525, 96, 59, 16);
+		ArticleCCliente.add(NumeroCC);
+		
+		JLabel Required3C = DefaultComponentFactory.getInstance().createTitle("*");
+		Required3C.setFont(new Font("Arial", Font.BOLD, 16));
+		Required3C.setForeground(Color.RED);
+		Required3C.setBounds(584, 96, 6, 16);
+		ArticleCCliente.add(Required3C);
+		
+		NumeroC = new JTextField();
+		NumeroC.setColumns(10);
+		NumeroC.setBounds(525, 111, 65, 25);
+		NumeroC.setDocument(new Documento(6,"[\\D]"));
+		NumeroC.setText("123456");
+		NumeroC.setForeground(Color.LIGHT_GRAY);
+		NumeroC.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(NumeroC.getText().length()<=0 && NumeroC.getForeground()==Color.black){
+					NumeroC.setText("123456");
+					NumeroC.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(NumeroC.getText().length()>0 && NumeroC.getForeground()==Color.LIGHT_GRAY){
+					NumeroC.setText("");
+					NumeroC.setForeground(Color.black);
+				}
+			}
+		});
+		ArticleCCliente.add(NumeroC);
+		
+		JLabel ComplementoCC = DefaultComponentFactory.getInstance().createTitle("Complemento:");
+		ComplementoCC.setFont(new Font("Arial", Font.PLAIN, 16));
+		ComplementoCC.setBounds(51, 139, 102, 16);
+		ArticleCCliente.add(ComplementoCC);
+		
+		ComplementoC = new JTextField();
+		ComplementoC.setColumns(10);
+		ComplementoC.setBounds(51, 156, 539, 25);
+		ComplementoC.setDocument(new Documento(100,""));
+		ComplementoC.setText("Complemento do seu endereço");
+		ComplementoC.setForeground(Color.LIGHT_GRAY);
+		ComplementoC.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(ComplementoC.getText().length()<=0 && ComplementoC.getForeground()==Color.black){
+					ComplementoC.setText("Complemento do seu endereço");
+					ComplementoC.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(ComplementoC.getText().length()>0 && ComplementoC.getForeground()==Color.LIGHT_GRAY){
+					ComplementoC.setText("");
+					ComplementoC.setForeground(Color.black);
+				}
+			}
+		});
+		ArticleCCliente.add(ComplementoC);
+		
+		JLabel CpfC = DefaultComponentFactory.getInstance().createLabel("CPF:");
+		CpfC.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		CpfC.setBounds(51, 276, 37, 14);
+		ArticleCCliente.add(CpfC);
+		
+		JLabel Required6C = DefaultComponentFactory.getInstance().createTitle("*");
+		Required6C.setFont(new Font("Arial", Font.PLAIN, 16));
+		Required6C.setForeground(Color.RED);
+		Required6C.setBounds(91, 276, 6, 16);
+		ArticleCCliente.add(Required6C);
+		
+		Cpfcc = new JTextField();
+		Cpfcc.setBounds(51, 297, 271, 25);
+		ArticleCCliente.add(Cpfcc);
+		Cpfcc.setColumns(10);
+		Cpfcc.setDocument(new Documento(14,"[\\D&&[^.-]]"));
+		Cpfcc.setText("000.000.000-00");
+		Cpfcc.setForeground(Color.LIGHT_GRAY);
+		Cpfcc.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(Cpfcc.getText().length()<=0 && Cpfcc.getForeground()==Color.black){
+					Cpfcc.setText("000.000.000-00");
+					Cpfcc.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(Cpfcc.getText().length()>0 && Cpfcc.getForeground()==Color.LIGHT_GRAY){
+					Cpfcc.setText("");
+					Cpfcc.setForeground(Color.black);
+				}
+			}
+		});
 		frame.getContentPane().add(ArticleVFornecedor);
 		ArticleCCliente.setVisible(false);
 		
+		JLabel Telefone1C = DefaultComponentFactory.getInstance().createTitle("Telefone1:");
+		Telefone1C.setFont(new Font("Arial", Font.PLAIN, 16));
+		Telefone1C.setBounds(53, 182, 76, 16);
+		ArticleCCliente.add(Telefone1C);
+		
+		JLabel Required4C = DefaultComponentFactory.getInstance().createTitle("*");
+		Required4C.setFont(new Font("Arial", Font.PLAIN, 16));
+		Required4C.setForeground(Color.RED);
+		Required4C.setBounds(128, 182, 6, 16);
+		ArticleCCliente.add(Required4C);
+		
+		Telefone1CC = new JTextField();
+		Telefone1CC.setColumns(10);
+		Telefone1CC.setBounds(51, 201, 135, 25);
+		Telefone1CC.setDocument(new Documento(15,"[\\D&&[^\\s()-]]"));
+		Telefone1CC.setText("(99) 99999-9999");
+		Telefone1CC.setForeground(Color.LIGHT_GRAY);
+		Telefone1CC.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(Telefone1CC.getText().length()<=0 && Telefone1CC.getForeground()==Color.black){
+					Telefone1CC.setText("(99) 99999-9999");
+					Telefone1CC.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(Telefone1CC.getText().length()>0 && Telefone1CC.getForeground()==Color.LIGHT_GRAY){
+					Telefone1CC.setText("");
+					Telefone1CC.setForeground(Color.black);
+				}
+			}
+		});
+		ArticleCCliente.add(Telefone1CC);
+		
+		JLabel Telefone2C = DefaultComponentFactory.getInstance().createTitle("Telefone2:");
+		Telefone2C.setFont(new Font("Arial", Font.PLAIN, 16));
+		Telefone2C.setBounds(455, 182, 74, 16);
+		ArticleCCliente.add(Telefone2C);
+		
+		Telefone2CC = new JTextField();
+		Telefone2CC.setColumns(10);
+		Telefone2CC.setBounds(455, 201, 135, 25);
+		Telefone2CC.setDocument(new Documento(15,"[\\D&&[^\\s()-]]"));
+		Telefone2CC.setText("(99) 99999-9999");
+		Telefone2CC.setForeground(Color.LIGHT_GRAY);
+		Telefone2CC.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(Telefone2CC.getText().length()<=0 && Telefone2CC.getForeground()==Color.black){
+					Telefone2CC.setText("(99) 99999-9999");
+					Telefone2CC.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(Telefone2CC.getText().length()>0 && Telefone2CC.getForeground()==Color.LIGHT_GRAY){
+					Telefone2CC.setText("");
+					Telefone2CC.setForeground(Color.black);
+				}
+			}
+		});
+		ArticleCCliente.add(Telefone2CC);
+		
+		JLabel EmailC = DefaultComponentFactory.getInstance().createTitle("E-mail:");
+		EmailC.setFont(new Font("Arial", Font.PLAIN, 16));
+		EmailC.setBounds(51, 229, 49, 16);
+		ArticleCCliente.add(EmailC);
+		
+		EmailCC = new JTextField();
+		EmailCC.setColumns(10);
+		EmailCC.setBounds(51, 246, 539, 25);
+		EmailCC.setDocument(new Documento(100, ""));
+		EmailCC.setText("seuemail@gmail.com");
+		EmailCC.setForeground(Color.LIGHT_GRAY);
+		Border defaul = EmailCC.getBorder();
+		EmailCC.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(EmailCC.getText().length()<=0 && EmailCC.getForeground()==Color.black){
+					EmailCC.setText("seuemail@gmail.com");
+					EmailCC.setForeground(Color.LIGHT_GRAY);
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(EmailCC.getText().length()>0 && EmailCC.getForeground()==Color.LIGHT_GRAY){
+					EmailCC.setText("");
+					EmailCC.setForeground(Color.black);
+				}
+			}
+		});
+		EmailCC.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(!Validar.validarEmail(EmailCC.getText())){
+					EmailCC.setBorder(new CompoundBorder(new CompoundBorder(new LineBorder(new Color(238, 221, 202), 1, true), new LineBorder(new Color(255,64,64))), new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(141, 142, 143)), new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(184, 184, 185)), new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(203, 203, 204)), new MatteBorder(1, 0, 0, 0, (Color) new Color(229, 229, 230)))))));
+				}else{
+					EmailCC.setBorder(defaul);
+				}
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!Validar.validarEmail(EmailCC.getText())){
+					EmailCC.setBorder(new CompoundBorder(new CompoundBorder(new LineBorder(new Color(238, 221, 202), 1, true), new LineBorder(new Color(255,64,64))), new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(141, 142, 143)), new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(184, 184, 185)), new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(203, 203, 204)), new MatteBorder(1, 0, 0, 0, (Color) new Color(229, 229, 230)))))));
+				}else{
+					//EmailCC.setBorder(new CompoundBorder(new CompoundBorder(new LineBorder(new Color(202, 221, 238), 1, true), new LineBorder(new Color(115, 164, 209))), new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(141, 142, 143)), new CompoundBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(184, 184, 185)), new CompoundBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(203, 203, 204)), new MatteBorder(1, 0, 0, 0, (Color) new Color(229, 229, 230)))))));
+					EmailCC.setBorder(defaul);
+				}
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {}
+		});
+		ArticleCCliente.add(EmailCC);
+
+		JLabel Required5C = DefaultComponentFactory.getInstance().createTitle("*");
+		Required5C.setFont(new Font("Arial", Font.PLAIN, 16));
+		Required5C.setForeground(Color.RED);
+		Required5C.setBounds(97, 49, 6, 16);
+		Required5C.setVisible(true);
+		ArticleCCliente.add(Required5C);
+		////////////////////////////////////////////////////////
+		
+		JLabel CadastrarC = DefaultComponentFactory.getInstance().createTitle("Cadastrar");
+		CadastrarC.setBounds(42, 18, 70, 16);
+		CadastrarCC.add(CadastrarC);
+		CadastrarC.setForeground(Color.BLACK);
+		CadastrarC.setFont(new Font("Arial", Font.PLAIN, 16));
+		
+		//CadastrarCC
+		CadastrarCC.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				CadastrarCC.setBackground(new Color(0,100,0));
+				CadastrarC.setForeground(Color.white);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				CadastrarCC.setBackground(new Color(50,205,50));
+				CadastrarC.setForeground(Color.black);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Cliente cliente=new Cliente();
+				if(txtId.getText().trim().equals("-1")){
+					try {
+						cliente.cadastrarCliente(NomeCC.getText(), Cpfcc.getText(), EnderecoCC.getText(), NumeroC.getText(), ComplementoC.getText(), Telefone1CC.getText(), Telefone2CC.getText(), EmailCC.getText());
+						JOptionPane.showMessageDialog(ArticleCFornecedor, "Cliente cadastrado com sucesso.", null, JOptionPane.INFORMATION_MESSAGE);
+						Idcliente.setText("-1");
+						NomeCC.setText("Nome completo");
+						EnderecoCC.setText("prefixo (rua,AV.,e.t.c...) seu endereço");
+						NumeroC.setText("123456");
+						ComplementoC.setText("Complemento do seu endereço");
+						Telefone1CC.setText("(99) 99999-9999");
+						Telefone2CC.setText("(99) 99999-9999");
+						EmailCC.setText("seuemail@gmail.com");
+						Cpfcc.setText("000.000.000-00");
+						NomeCC.setForeground(Color.LIGHT_GRAY);
+						EnderecoCC.setForeground(Color.LIGHT_GRAY);
+						NumeroC.setForeground(Color.LIGHT_GRAY);
+						ComplementoC.setForeground(Color.LIGHT_GRAY);
+						Telefone1CC.setForeground(Color.LIGHT_GRAY);
+						Telefone2CC.setForeground(Color.LIGHT_GRAY);
+						EmailCC.setForeground(Color.LIGHT_GRAY);
+						Cpfcc.setForeground(Color.LIGHT_GRAY);
+						PessoaFisica.setSelected(true);
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(ArticleCFornecedor, e1.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+					}
+				}else{
+					try {
+						cliente.alterarCliente(Idcliente.getText(), NomeCC.getText(), EnderecoCC.getText(), NumeroC.getText(), ComplementoC.getText(), Telefone1CC.getText(), Telefone2CC.getText(), EmailCC.getText(), Cpfcc.getText());
+						JOptionPane.showMessageDialog(ArticleCCliente, "Cliente alterado com sucesso.", null, JOptionPane.INFORMATION_MESSAGE);
+						txtId.setText("-1");
+						NomeCC.setText("Nome completo");
+						EnderecoCC.setText("prefixo (rua,AV.,e.t.c...) seu endereço");
+						NumeroC.setText("123456");
+						ComplementoC.setText("Complemento do seu endereço");
+						Telefone1CC.setText("(99) 99999-9999");
+						Telefone2CC.setText("(99) 99999-9999");
+						EmailCC.setText("seuemail@gmail.com");
+						Cpfcc.setText("000.000.000-00");
+						NomeCC.setForeground(Color.LIGHT_GRAY);
+						EnderecoCC.setForeground(Color.LIGHT_GRAY);
+						NumeroC.setForeground(Color.LIGHT_GRAY);
+						ComplementoC.setForeground(Color.LIGHT_GRAY);
+						Telefone1CC.setForeground(Color.LIGHT_GRAY);
+						Telefone2CC.setForeground(Color.LIGHT_GRAY);
+						EmailCC.setForeground(Color.LIGHT_GRAY);
+						Cpfcc.setForeground(Color.LIGHT_GRAY);
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(ArticleCCliente, e1.getMessage(), null, JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		CadastrarCC.setBackground(new Color(50,205,50));
+		CadastrarCC.setBounds(786, 450, 147, 50);
+		ArticleCCliente.add(CadastrarCC);
+		CadastrarCC.setLayout(null);
+		
+		JLabel CancelarC = DefaultComponentFactory.getInstance().createTitle("Cancelar");
+		CancelarC.setBounds(43, 18, 65, 16);
+		CancelarCC.add(CancelarC);
+		CancelarC.setForeground(Color.BLACK);
+		CancelarC.setFont(new Font("Arial", Font.PLAIN, 16));
+		
+		//CancelarCC
+		CancelarCC.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				CancelarCC.setBackground(new Color(0,100,0));
+				CancelarC.setForeground(Color.white);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				CancelarCC.setBackground(new Color(50,205,50));
+				CancelarC.setForeground(Color.black);
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				Idcliente.setText("-1");
+				NomeCC.setText("Nome completo");
+				NomeCC.setForeground(Color.LIGHT_GRAY);
+				EnderecoCC.setText("prefixo (rua,AV.,e.t.c...) seu endereço");
+				EnderecoCC.setForeground(Color.LIGHT_GRAY);
+				NumeroC.setText("123456");
+				NumeroC.setForeground(Color.LIGHT_GRAY);
+				ComplementoC.setText("Complemento do seu endereço");
+				ComplementoC.setForeground(Color.LIGHT_GRAY);
+				Telefone1CC.setText("(99) 99999-9999");
+				Telefone1CC.setForeground(Color.LIGHT_GRAY);
+				Telefone2CC.setText("(99) 99999-9999");
+				Telefone2CC.setForeground(Color.LIGHT_GRAY);
+				EmailCC.setText("seuemail@gmail.com");
+				EmailCF.setForeground(Color.LIGHT_GRAY);
+				Cpfcc.setText("000.000.000-00");
+				Cpfcc.setForeground(Color.LIGHT_GRAY);
+			}
+		});
+		CancelarCC.setBackground(new Color(50,205,50));
+		CancelarCC.setBounds(935, 450, 147, 50);
+		ArticleCCliente.add(CancelarCC);
+		CancelarCC.setLayout(null);
+		
+		///////////////////////////////////////////////////////
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(59, 44, 973, 401);
 		ArticleVFornecedor.add(scrollPane);
@@ -523,13 +1218,13 @@ public class SGBDEstoque {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(VFornecedores.getSelectedRow()!=-1){
-					int i=JOptionPane.showConfirmDialog(ArticleVFornecedor, "Deseja excluir o produto?", null, JOptionPane.YES_NO_OPTION);
+					int i=JOptionPane.showConfirmDialog(ArticleVFornecedor, "Deseja excluir o fornecedor?", null, JOptionPane.YES_NO_OPTION);
 					if(i == JOptionPane.YES_OPTION){
 						Fornecedor fornecedor=new Fornecedor();
 						try{
 							fornecedor.excluirFornecedor((String) VFornecedores.getValueAt(VFornecedores.getSelectedRow(), 0));
 							if (!criarTabela(VisualizarFornecedores, VFornecedores, "select * from fornecedor order by Nome;"));
-							JOptionPane.showMessageDialog(ArticleVFornecedor, "Produto excluido com sucesso", null, JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(ArticleVFornecedor, "Fornecedor excluido com sucesso", null, JOptionPane.INFORMATION_MESSAGE);
 						}catch (Exception e1) {
 							JOptionPane.showMessageDialog(ArticleVFornecedor, e1.getMessage(), null, JOptionPane.INFORMATION_MESSAGE);
 						}
@@ -779,7 +1474,6 @@ public class SGBDEstoque {
 		EmailCF.setDocument(new Documento(100, ""));
 		EmailCF.setText("seuemail@gmail.com");
 		EmailCF.setForeground(Color.LIGHT_GRAY);
-		Border defaul = EmailCF.getBorder();
 		EmailCF.addFocusListener(new FocusListener() {
 			
 			@Override
@@ -1125,6 +1819,61 @@ public class SGBDEstoque {
 	    table.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);  
 	    table.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);  
 	    table.getColumnModel().getColumn(0).setResizable(true);
+		table.getColumnModel().getColumn(1).setPreferredWidth(334);
+		table.getColumnModel().getColumn(1).setResizable(true);
+		table.getColumnModel().getColumn(2).setPreferredWidth(134);
+		table.getColumnModel().getColumn(2).setResizable(true);
+		table.getColumnModel().getColumn(3).setPreferredWidth(134);
+		table.getColumnModel().getColumn(3).setResizable(true);
+		table.getColumnModel().getColumn(4).setPreferredWidth(134);
+		table.getColumnModel().getColumn(4).setResizable(true);
+		table.getColumnModel().getColumn(5).setPreferredWidth(231);
+		table.getColumnModel().getColumn(5).setResizable(true);
+		table.getTableHeader().setReorderingAllowed(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		return true;
+	}
+	
+	public boolean criarTabelaC(String[] Colunas,JTable table,String sql){
+		ArrayList<Object> dados = new ArrayList<Object>();
+		ArrayList<Cliente> dados2 = new ArrayList<Cliente>();
+		try {
+			Cliente cliente=new Cliente();
+			dados2=cliente.buscarClientes();
+			for(int i=0; i<dados2.size();i++){
+				dados.add(new Object[]{dados2.get(i).getId(),dados2.get(i).getNome(),dados2.get(i).getCpf(),dados2.get(i).getContato().getNumero1(),dados2.get(i).getContato().getNumero2(),dados2.get(i).getContato().getEmail()});
+			}
+		}catch (Exception e) {
+			ModeloTabela modelo=new ModeloTabela(dados, Colunas);
+			table.setModel(modelo);
+			table.getColumnModel().getColumn(0).setMaxWidth(0);  
+			table.getColumnModel().getColumn(0).setMinWidth(0);  
+			table.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);  
+			table.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);  
+			table.getColumnModel().getColumn(0).setResizable(true);
+			table.getColumnModel().getColumn(1).setPreferredWidth(334);
+			table.getColumnModel().getColumn(1).setResizable(true);
+			table.getColumnModel().getColumn(2).setPreferredWidth(134);
+			table.getColumnModel().getColumn(2).setResizable(true);
+			table.getColumnModel().getColumn(3).setPreferredWidth(134);
+			table.getColumnModel().getColumn(3).setResizable(true);
+			table.getColumnModel().getColumn(4).setPreferredWidth(134);
+			table.getColumnModel().getColumn(4).setResizable(true);
+			table.getColumnModel().getColumn(5).setPreferredWidth(231);
+			table.getColumnModel().getColumn(5).setResizable(true);
+			table.getTableHeader().setReorderingAllowed(true);
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			return false;
+		}
+		ModeloTabela modelo=new ModeloTabela(dados, Colunas);
+		table.setModel(modelo);
+		table.getColumnModel().getColumn(0).setMaxWidth(0);  
+		table.getColumnModel().getColumn(0).setMinWidth(0);  
+		table.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);  
+		table.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);  
+		table.getColumnModel().getColumn(0).setResizable(true);
 		table.getColumnModel().getColumn(1).setPreferredWidth(334);
 		table.getColumnModel().getColumn(1).setResizable(true);
 		table.getColumnModel().getColumn(2).setPreferredWidth(134);

@@ -1,4 +1,4 @@
-package control;
+package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 
-import trabalhobd.jdbc.model.Contato;
-import trabalhobd.jdbc.model.Endereco;
-import trabalhobd.jdbc.model.Cliente;
+import model.Cliente;
+import model.Contato;
+import model.Endereco;
 
 public class ClienteDAO {
 	private BancoDeDados banco = new BancoDeDados();
@@ -25,7 +25,7 @@ public class ClienteDAO {
 		conectar();
 	}
 
-	public void inserirContato(Contato contato) {
+	public void inserirContato(Contato contato) throws Exception {
 		Contato aux = contato;
 		String sql = "insert into contato (numero1,numero2,email) values (?,?,?)";
 		try {
@@ -36,11 +36,11 @@ public class ClienteDAO {
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new Exception(e.getMessage());
 		}
 	}
 
-	public void inserirEndereco(Endereco endereco) {
+	public void inserirEndereco(Endereco endereco) throws Exception {
 		Endereco aux = endereco;
 		String sql = "insert into endereco (endereco,numero,complemento) values (?,?,?)";
 		try {
@@ -51,14 +51,14 @@ public class ClienteDAO {
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new Exception(e.getMessage());
 		}
 	}
 
-	public void inserirCliente(Cliente cliente) {
+	public void inserirCliente(Cliente cliente) throws Exception {
 		String sql = "insert into cliente (nome,cpf,idContato,idEndereco) values (?,?,?,?)";
-		String sql2 = "SELECT LAST_INSERT_ID() as id from contato";
-		String sql3 = "SELECT LAST_INSERT_ID() as id from endereco";
+		String sql2 = "SELECT LAST_INSERT_ID() as idContato from contato";
+		String sql3 = "SELECT LAST_INSERT_ID() as idEndereco from endereco";
 		try {
 			PreparedStatement stmt = (PreparedStatement) getBanco().getCon().prepareStatement(sql);
 			PreparedStatement stmt2 = (PreparedStatement) getBanco().getCon().prepareStatement(sql2);
@@ -66,20 +66,39 @@ public class ClienteDAO {
 			rs.next();
 			stmt.setString(1, cliente.getNome());
 			stmt.setString(2, cliente.getCpf());
-			stmt.setString(3, "" + rs.getString("id"));
+			stmt.setString(3, rs.getString("idContato"));
 			stmt2 = (PreparedStatement) getBanco().getCon().prepareStatement(sql3);
 			rs=stmt2.executeQuery();
 			rs.next();
-			stmt.setString(4, "" + rs.getString("id"));
+			stmt.setString(4, rs.getString("idEndereco"));
 			stmt2.close();
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new Exception(e.getMessage());
 		}
 	}
 	
-	public ArrayList<Endereco> buscarEndereco(){
+	public Endereco buscarEndereco(String id) throws Exception{
+		try {
+			PreparedStatement stmt = (PreparedStatement) getBanco().getCon().prepareStatement("select * from Endereco where idEndereco="+id);
+			ResultSet rs = stmt.executeQuery();
+			Endereco aux= new Endereco();
+			while(rs.next()){
+				aux.setEndereco(rs.getString("endereco"));
+				aux.setNumero(rs.getString("numero"));
+				aux.setComplemento(rs.getString("complemento"));
+				aux.setId(rs.getInt("idEndereco"));
+			}
+			stmt.close();
+			rs.close();
+			return aux;
+		} catch (SQLException e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	public ArrayList<Endereco> buscarEndereco() throws Exception{
 		try {
 			PreparedStatement stmt = (PreparedStatement) getBanco().getCon().prepareStatement("select * from Endereco");
 			ResultSet rs = stmt.executeQuery();
@@ -95,11 +114,30 @@ public class ClienteDAO {
 			rs.close();
 			return enderecos;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new Exception(e.getMessage());
 		}
 	}
 	
-	public ArrayList<Contato> buscarContato(){
+	public Contato buscarContato(String id) throws Exception{
+		try {
+			PreparedStatement stmt = (PreparedStatement) getBanco().getCon().prepareStatement("select * from Contato where idContato="+id);
+			ResultSet rs = stmt.executeQuery();
+			Contato aux= new Contato();
+			while(rs.next()){
+				aux.setNumero1(rs.getString("numero1"));
+				aux.setNumero2(rs.getString("numero2"));
+				aux.setEmail(rs.getString("email"));
+				aux.setId(rs.getInt("idContato"));
+			}
+			stmt.close();
+			rs.close();
+			return aux;
+		} catch (SQLException e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	public ArrayList<Contato> buscarContato() throws Exception{
 		try {
 			PreparedStatement stmt = (PreparedStatement) getBanco().getCon().prepareStatement("select * from Contato");
 			ResultSet rs = stmt.executeQuery();
@@ -115,11 +153,30 @@ public class ClienteDAO {
 			rs.close();
 			return contatos;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new Exception(e.getMessage());
 		}
 	}
 	
-	public ArrayList<Cliente> buscarCliente(){
+	public Cliente buscarCliente(String id) throws Exception{
+		Cliente aux=new Cliente();
+		try {
+			PreparedStatement stmt = (PreparedStatement) getBanco().getCon().prepareStatement("select * from Cliente where idCliente="+id);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				aux.setId(rs.getString("idCliente"));
+				aux.setNome(rs.getString("nome"));
+				aux.setCpf(rs.getString("cpf"));
+				aux.setEndereco(buscarEndereco(rs.getString("idEndereco")));
+				aux.setContato(buscarContato(rs.getString("idContato")));
+				aux.setDataCadastro(rs.getString("dataCadastro"));
+			}
+			return aux;	
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
+	public ArrayList<Cliente> buscarCliente() throws Exception{
 		ArrayList<Cliente> cliente=new ArrayList<Cliente>();
 		ArrayList<Contato> contatos=buscarContato();
 		ArrayList<Endereco> enderecos=buscarEndereco();
@@ -140,7 +197,7 @@ public class ClienteDAO {
 			rs.close();
 			return cliente;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new Exception(e.getMessage());
 		}
 	}
 
@@ -166,6 +223,22 @@ public class ClienteDAO {
 			throw new RuntimeException();
 		}
 	}
+	
+	public void alterarCliente(String id,String nome, String endereco,String numero,String complemento,String numero1,String numero2,String email,String cpf) throws Exception{
+		try{
+			Cliente Cliente=buscarCliente(id);
+			PreparedStatement stmt= (PreparedStatement) getBanco().getCon().prepareStatement("update Cliente set nome= '"+nome+"',cpf='"+cpf+"' where IdCliente =" + Cliente.getId() + ";");
+			stmt.executeUpdate();
+			stmt= (PreparedStatement) getBanco().getCon().prepareStatement("update Endereco set endereco= '"+endereco+"',numero='"+numero+"',complemento='"+complemento+"' where IdEndereco =" + Cliente.getEndereco().getId() + ";");
+			stmt.executeUpdate();
+			stmt= (PreparedStatement) getBanco().getCon().prepareStatement("update Contato set numero1= '"+numero1+"',numero2='"+numero2+"',email='"+email+"' where IdContato =" + Cliente.getContato().getId() + ";");
+			stmt.executeUpdate();
+			stmt.close();
+		}catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+	
 	public BancoDeDados getBanco() {
 		return banco;
 	}

@@ -57,8 +57,8 @@ public class FornecedorDAO {
 
 	public void inserirFornecedor(Fornecedor fornecedor) throws Exception {
 		String sql = "insert into fornecedor (nome,cpf,cnpj,isPessoaF,idContato,idEndereco) values (?,?,?,?,?,?)";
-		String sql2 = "SELECT LAST_INSERT_ID() as id from contato";
-		String sql3 = "SELECT LAST_INSERT_ID() as id from endereco";
+		String sql2 = "SELECT LAST_INSERT_ID() as idContato	from contato";
+		String sql3 = "SELECT LAST_INSERT_ID() as idEndereco from endereco";
 		try {
 			PreparedStatement stmt = (PreparedStatement) getBanco().getCon().prepareStatement(sql);
 			PreparedStatement stmt2 = (PreparedStatement) getBanco().getCon().prepareStatement(sql2);
@@ -67,12 +67,12 @@ public class FornecedorDAO {
 			stmt.setString(1, fornecedor.getNome());
 			stmt.setString(2, fornecedor.getCpf());
 			stmt.setString(3, fornecedor.getCnpj());
-			stmt.setString(4, "" + fornecedor.isPessoaF());
-			stmt.setString(5, "" + rs.getString("id"));
+			stmt.setString(4, ""+fornecedor.isPessoaF());
+			stmt.setString(5, rs.getString("idContato"));
 			stmt2 = (PreparedStatement) getBanco().getCon().prepareStatement(sql3);
 			rs=stmt2.executeQuery();
 			rs.next();
-			stmt.setString(6, "" + rs.getString("id"));
+			stmt.setString(6, rs.getString("idEndereco"));
 			stmt2.close();
 			stmt.execute();
 			stmt.close();

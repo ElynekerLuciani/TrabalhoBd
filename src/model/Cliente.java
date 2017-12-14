@@ -25,7 +25,7 @@ public class Cliente {
 		setContato(new Contato(numero1, numero2, email));
 	}
 	
-	public void cadastrarCliente(String nome, String cpf,String endereco, String numero, String complemento,String numero1,String numero2,String email) throws SQLException{
+	public void cadastrarCliente(String nome, String cpf,String endereco, String numero, String complemento,String numero1,String numero2,String email) throws Exception{
 		ClienteDAO con=new ClienteDAO();
 		Cliente aux=new Cliente(nome, cpf, endereco, numero, complemento, numero1, numero2, email);
 		con.inserirContato(aux.getContato());
@@ -34,16 +34,29 @@ public class Cliente {
 		con.getBanco().getCon().close();
 	}
 	
-	public ArrayList<Cliente> buscarFornecedor() throws SQLException{
+	public ArrayList<Cliente> buscarClientes() throws Exception{
 		ClienteDAO con=new ClienteDAO();
 		ArrayList<Cliente> aux=con.buscarCliente();
 		con.getBanco().getCon().close();
 		return aux;
 	}
 	
-	public void excluirFornecedor(String id) throws SQLException{
+	public void excluirCliente(String id) throws SQLException{
 		ClienteDAO con=new ClienteDAO();
 		con.excluirCliente(id);
+		con.getBanco().getCon().close();
+	}
+	
+	public Cliente buscarCliente(String id) throws Exception{
+		ClienteDAO con=new ClienteDAO();
+		Cliente aux=con.buscarCliente(id);
+		con.getBanco().getCon().close();
+		return aux;
+	}
+	
+	public void alterarCliente(String id,String nome, String endereco,String numero,String complemento,String numero1,String numero2,String email,String cpf) throws Exception{
+		ClienteDAO con=new ClienteDAO();
+		con.alterarCliente(id, nome, endereco, numero, complemento, numero1, numero2, email, cpf);
 		con.getBanco().getCon().close();
 	}
 	
