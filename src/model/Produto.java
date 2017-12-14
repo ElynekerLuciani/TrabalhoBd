@@ -11,7 +11,7 @@ public class Produto {
 	private float valorCompra;
 	private float valorVenda;
 	
-	
+	//teste de commit
 	public Produto() {
 		
 	}
