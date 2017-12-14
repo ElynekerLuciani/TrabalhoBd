@@ -1,18 +1,18 @@
-package trabalhobd.jdbc.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import trabalhobd.jdbc.conexao.dao.ConnectionFactory;
-import trabalhobd.jdbc.model.Categoria;
+import dao.BancoDeDados;
+import model.Categoria;
 
 public class CategoriaDAO {
 	private Connection connection;
 	private String sql;
 	
 	public CategoriaDAO() throws SQLException {
-		this.connection = new ConnectionFactory().getConnection();
+		this.connection = new BancoDeDados().getCon();
 	}
 
 	public void criarCategoria(Categoria categoria) {

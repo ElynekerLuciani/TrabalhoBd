@@ -1,4 +1,4 @@
-package trabalhobd.jdbc.model;
+package model;
 
 public class Contato {
 	private String numero1;

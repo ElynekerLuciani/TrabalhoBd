@@ -1,17 +1,13 @@
-package trabalhobd.jdbc.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
-import sun.print.PeekGraphics;
-import trabalhobd.jdbc.conexao.dao.ConnectionFactory;
-import trabalhobd.jdbc.model.Endereco;
-import trabalhobd.jdbc.model.Estoque;
-import trabalhobd.jdbc.model.Produto;
+import model.Estoque;
+import model.Produto;
 
 public class EstoqueDAO {
 	private Connection connection;
@@ -22,7 +18,7 @@ public class EstoqueDAO {
 	
 	
 	public EstoqueDAO() throws SQLException {
-		this.connection = new ConnectionFactory().getConnection();
+		this.connection = new BancoDeDados().getCon();
 	}
 	
 	public void inserirNoEstoque(Estoque novo) throws Exception{

@@ -1,9 +1,9 @@
-package trabalhobd.jdbc.model;
+package model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import control.ClienteDAO;
+import dao.ClienteDAO;
 
 public class Cliente {
 	private String id;

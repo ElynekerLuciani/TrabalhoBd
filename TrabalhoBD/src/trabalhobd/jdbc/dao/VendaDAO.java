@@ -1,16 +1,16 @@
-package trabalhobd.jdbc.dao;
+package dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import trabalhobd.jdbc.conexao.dao.ConnectionFactory;
+import dao.BancoDeDados;
 
 public class VendaDAO {
 	private Connection connection;
 	private String sql;
 	
 	public VendaDAO() throws SQLException {
-		this.connection = new ConnectionFactory().getConnection();
+		this.connection = new BancoDeDados().getCon();
 	}
 
 	public void realizarVenda() {

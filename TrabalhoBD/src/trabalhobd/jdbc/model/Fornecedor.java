@@ -1,9 +1,9 @@
-package trabalhobd.jdbc.model;
+package model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import control.FornecedorDAO;
+import dao.FornecedorDAO;
 
 public class Fornecedor {
 	private String nome;
@@ -29,7 +29,7 @@ public class Fornecedor {
 		setContato(new Contato(numero1, numero2, email));
 	}
 	
-	public void cadastrarFornecedor(String nome, String cpf, String cnpj,boolean pessoaF,String endereco, String numero, String complemento,String numero1,String numero2,String email) throws SQLException{
+	public void cadastrarFornecedor(String nome, String cpf, String cnpj,boolean pessoaF,String endereco, String numero, String complemento,String numero1,String numero2,String email) throws Exception{
 		FornecedorDAO con=new FornecedorDAO();
 		Fornecedor aux=new Fornecedor(nome, cpf, cnpj, pessoaF, endereco, numero, complemento, numero1, numero2, email);
 		con.inserirContato(aux.getContato());
@@ -38,16 +38,29 @@ public class Fornecedor {
 		con.getBanco().getCon().close();
 	}
 	
-	public ArrayList<Fornecedor> buscarFornecedor() throws SQLException{
+	public ArrayList<Fornecedor> buscarFornecedor() throws Exception{
 		FornecedorDAO con=new FornecedorDAO();
 		ArrayList<Fornecedor> aux=con.buscarFornecedor();
 		con.getBanco().getCon().close();
 		return aux;
 	}
 	
-	public void excluirFornecedor(String id) throws SQLException{
+	public Fornecedor buscarFornecedor(String id) throws Exception{
+		FornecedorDAO con=new FornecedorDAO();
+		Fornecedor aux=con.buscarFornecedor(id);
+		con.getBanco().getCon().close();
+		return aux;
+	}
+	
+	public void excluirFornecedor(String id) throws Exception{
 		FornecedorDAO con=new FornecedorDAO();
 		con.excluirFornecedor(id);
+		con.getBanco().getCon().close();
+	}
+	
+	public void alterarFornecedor(String id,String nome, String endereco,String numero,String complemento,String numero1,String numero2,String email,String cpf,String cnpj, boolean isPessoaF) throws Exception{
+		FornecedorDAO con=new FornecedorDAO();
+		con.alterarFornecedor(id, nome, endereco, numero, complemento, numero1, numero2, email, cpf, cnpj, isPessoaF);
 		con.getBanco().getCon().close();
 	}
 	

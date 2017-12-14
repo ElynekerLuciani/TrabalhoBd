@@ -1,16 +1,10 @@
-package trabalhobd.jdbc.dao;
+package dao;
 
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
-
-import com.sun.xml.internal.ws.api.pipe.ThrowableContainerPropertySet;
-
-import trabalhobd.jdbc.conexao.dao.ConnectionFactory;
-import trabalhobd.jdbc.model.Produto;
+import dao.BancoDeDados;
+import model.Produto;
 
 public class ProdutoDAO {
 	private Connection connection;
@@ -18,7 +12,7 @@ public class ProdutoDAO {
 	
 	
 	public ProdutoDAO() throws SQLException {
-		this.connection = new ConnectionFactory().getConnection();
+		this.connection = new BancoDeDados().getCon();
 	}
 
 	

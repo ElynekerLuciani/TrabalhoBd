@@ -1,6 +1,6 @@
-package trabalhobd.jdbc.model;
+package model;
 
-import trabalhobd.jdbc.dao.ProdutoDAO;
+import dao.ProdutoDAO;
 
 public class Produto {
 	private int idProduto;

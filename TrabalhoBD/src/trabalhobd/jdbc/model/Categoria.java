@@ -1,6 +1,6 @@
-package trabalhobd.jdbc.model;
+package model;
 
-import trabalhobd.jdbc.dao.CategoriaDAO;
+import dao.CategoriaDAO;
 
 public class Categoria {
 	private int idCategoria;

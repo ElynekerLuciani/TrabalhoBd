@@ -1,9 +1,9 @@
-package trabalhobd.jdbc.model;
+package model;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import trabalhobd.jdbc.dao.EstoqueDAO;
+import dao.EstoqueDAO;
 
 public class Estoque {
 	private int idProduto;
