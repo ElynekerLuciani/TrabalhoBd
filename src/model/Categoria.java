@@ -9,16 +9,14 @@ public class Categoria {
 	public Categoria(){
 		
 	}
-
 	
-	public void adicionarCategoria(String add){
+	public void adicionarCategoria(String add) throws Exception{
 		try{
-			Categoria novaCategoria = new Categoria();
-			novaCategoria.setNomeCat(add);
 			CategoriaDAO categoria = new CategoriaDAO();
-			categoria.criarCategoria(novaCategoria);
+			categoria.criarCategoria(add);
+			categoria.getBanco().getCon().close();
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			throw new Exception(e.getMessage());
 		}
 	}
 	

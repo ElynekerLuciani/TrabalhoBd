@@ -1,54 +1,46 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
+import com.mysql.jdbc.PreparedStatement;
 import dao.BancoDeDados;
-import model.Categoria;
 
 public class CategoriaDAO {
-	private Connection connection;
+	private BancoDeDados banco = new BancoDeDados();
 	private String sql;
 	
-	public CategoriaDAO() throws SQLException {
-		this.connection = new BancoDeDados().getCon();
+	public CategoriaDAO() throws Exception {
+		try{
+			getBanco().conectaMysql("TrabalhoBD");
+		}catch(Exception e){
+			throw new Exception(e.getMessage());
+		}
 	}
 
-	public void criarCategoria(Categoria categoria) {
-		sql = "INSERT INTO categoria(nomeCat) VALUES('?');";
+	public void criarCategoria(String add) throws Exception {
+		sql = "insert into categoria(categoria.nomCat) values (?)";
 		try {
-			PreparedStatement stmt = connection.prepareStatement(sql);
-			stmt.setString(1, categoria.getNomeCat());
+			PreparedStatement stmt =(PreparedStatement) getBanco().getCon().prepareStatement(sql);
+			stmt.setString(1, add);
 			stmt.execute();
 			stmt.close();
 		} catch (Exception e) {
-			System.out.println(e.getMessage() + "Erro ao inserir uma categoria!");
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 	
-	
-	
-	
 	//metodos getters setters
-	public Connection getConnection() { return connection; }
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
 
 	public String getSql() { return sql; }
 	public void setSql(String sql) {
 		this.sql = sql;
 	}
-	
-	/*
-	create table categoria(
-			idCategoria INTEGER NOT NULL AUTO_INCREMENT,
-		    nomeCat VARCHAR(45) NOT NULL,
-		    
-		    PRIMARY KEY(idCategoria)
-		);
-	*/
-	
+
+	public BancoDeDados getBanco() {
+		return banco;
+	}
+
+	public void setBanco(BancoDeDados banco) {
+		this.banco = banco;
+	}
 
 }
