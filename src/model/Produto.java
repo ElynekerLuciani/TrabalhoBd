@@ -12,6 +12,7 @@ public class Produto {
 	private float valorVenda;
 	
 	//teste de commit
+	//teste 2 dommit
 	public Produto() {
 		
 	}
